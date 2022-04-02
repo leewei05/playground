@@ -12,6 +12,7 @@
 *.class
 *.sm
 *.dSYM
+*.o
 
 # Ignore `bin` dir
 bin/
