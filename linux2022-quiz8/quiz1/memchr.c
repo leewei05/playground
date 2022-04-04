@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <limits.h>
+#include <stdio.h>
 #include <string.h>
 
 /* Nonzero if either X or Y is not aligned on a "long" boundary */
@@ -14,11 +14,11 @@
 #define TOO_SMALL(LEN) ((LEN) < LBLOCKSIZE)
 
 #if LONG_MAX == 2147483647L
-#define DETECT_NULL(X) (((X) -0x01010101) & ~(X) & 0x80808080)
+#define DETECT_NULL(X) (((X) -0x01010101) & ~(X) &0x80808080)
 #else
 #if LONG_MAX == 9223372036854775807L
 /* Nonzero if X (a long int) contains a NULL byte. */
-#define DETECT_NULL(X) (((X) -0x0101010101010101) & ~(X) & 0x8080808080808080)
+#define DETECT_NULL(X) (((X) -0x0101010101010101) & ~(X) &0x8080808080808080)
 #else
 #error long int is not a 32bit or 64bit type.
 #endif
@@ -69,13 +69,14 @@ void *memchr_opt(const void *src_void, int c, size_t length)
                     asrc++;
                 }
             }
-            // if no, reduce length by LBLOCKSIZE
+            // if no char matches, reduce length by LBLOCKSIZE
             length -= LBLOCKSIZE;
-            // move forward by LBLOCKSIZE cause there were no matching charater in this block
+            // move forward by LBLOCKSIZE because there were no matching charater
+            // in this block
             offset += LBLOCKSIZE;
             *asrc = asrc[offset];
-            //check if source array is shorter than LBLOCKSIZE
-            if (DETECT_NULL(*asrc)){
+            // check if source array is shorter than LBLOCKSIZE
+            if (DETECT_NULL(*asrc)) {
                 break;
             }
         }
