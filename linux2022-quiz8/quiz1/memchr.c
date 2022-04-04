@@ -57,8 +57,6 @@ void *memchr_opt(const void *src_void, int c, size_t length)
         for (unsigned int i = 32; i < LBLOCKSIZE * 8; i <<= 1)
             mask = (mask << i) | mask;
 
-        // define array offset
-        int offset = 0;
         while (length >= LBLOCKSIZE) {
             // check if char matches
             if (DETECT_CHAR(*asrc, mask)) {
@@ -74,12 +72,10 @@ void *memchr_opt(const void *src_void, int c, size_t length)
             length -= LBLOCKSIZE;
             // move forward by LBLOCKSIZE because there were no matching
             // charater in this block
-            offset += LBLOCKSIZE;
-            *asrc = *(asrc + offset);
+            asrc += 1;
             // check if source array is shorter than LBLOCKSIZE
-            if (DETECT_NULL(*asrc)) {
+            if (DETECT_NULL(*asrc))
                 break;
-            }
         }
 
         /* If there are fewer than LBLOCKSIZE characters left, then we resort to
@@ -101,8 +97,16 @@ int main()
 {
     const char str[] = "http://wiki.csie.ncku.edu.tw";
     const char ch = '.';
+    const char str2[] = "http://wiki.csie.ncku.edu.tw";
+    const char ch2 = 'p';
+    const char str3[] = "http://wiki.csie.ncku.edu.tw";
+    const char ch3 = 'u';
 
     char *ret = memchr_opt(str, ch, strlen(str));
     printf("String after |%c| is - |%s|\n", ch, ret);
+    char *ret2 = memchr_opt(str2, ch2, strlen(str2));
+    printf("String after |%c| is - |%s|\n", ch2, ret2);
+    char *ret3 = memchr_opt(str3, ch3, strlen(str3));
+    printf("String after |%c| is - |%s|\n", ch3, ret3);
     return 0;
 }
