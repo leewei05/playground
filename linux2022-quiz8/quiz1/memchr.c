@@ -57,24 +57,25 @@ void *memchr_opt(const void *src_void, int c, size_t length)
         for (unsigned int i = 32; i < LBLOCKSIZE * 8; i <<= 1)
             mask = (mask << i) | mask;
 
+        // define array offset
+        int offset = 0;
         while (length >= LBLOCKSIZE) {
-            // define array offset
-            int offset = 0;
             // check if char matches
             if (DETECT_CHAR(*asrc, mask)) {
                 // if yes, check char one by one until we find the char
+                src = (unsigned char *) asrc;
                 while (length--) {
-                    if (*asrc == d)
-                        return (void *) asrc;
-                    asrc++;
+                    if (*src == d)
+                        return (void *) src;
+                    src++;
                 }
             }
             // if no char matches, reduce length by LBLOCKSIZE
             length -= LBLOCKSIZE;
-            // move forward by LBLOCKSIZE because there were no matching charater
-            // in this block
+            // move forward by LBLOCKSIZE because there were no matching
+            // charater in this block
             offset += LBLOCKSIZE;
-            *asrc = asrc[offset];
+            *asrc = *(asrc + offset);
             // check if source array is shorter than LBLOCKSIZE
             if (DETECT_NULL(*asrc)) {
                 break;
