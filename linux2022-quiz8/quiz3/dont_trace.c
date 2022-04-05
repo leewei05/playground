@@ -67,9 +67,11 @@ static void check(void)
 
 static void periodic_routine(struct work_struct *ws)
 {
-    if (likely(/* XXXXX: Implement */))
+    // check each process if dont_trace module is loaded
+    if (likely(loaded))
         check();
-    /* XXXXX: Implement */;
+    // run work task again after JIFFIES_DELAY
+    schedule_delayed_work(&dont_trace_task, JIFFIES_DELAY);
 }
 
 static int __init dont_trace_init(void)

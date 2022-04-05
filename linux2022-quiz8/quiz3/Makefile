@@ -8,3 +8,9 @@ all:
 
 clean:
 		$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
+
+load:
+		sudo insmod dont_trace.ko
+
+unload:
+		sudo rmmod dont_trace
