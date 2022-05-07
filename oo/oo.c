@@ -3,11 +3,6 @@
 
 #include "oo.h"
 
-struct object {
-  int a, b;
-  func_t add, sub;
-};
-
 static int add_impl(Object *obj)
 {
     return obj->a + obj->b;
@@ -22,7 +17,7 @@ int init_object(Object **self)
 {
     *self = malloc(sizeof(Object));
     if (*self == NULL) {
-        printf("fail to allocate memory");
+        printf("fail to allocate memory\n");
         return -1;
     }
 
@@ -36,7 +31,7 @@ int init_object(Object **self)
 int release_object(Object **self)
 {
     free(*self);
-    printf("release allocate memory");
+    printf("release allocate memory\n");
     return 0;
 }
 
