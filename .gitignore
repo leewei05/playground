@@ -4,6 +4,7 @@
 # Unignore all with extensions
 !*.*
 !Makefile
+!Doxyfile
 
 # Unignore all dirs
 !*/
@@ -32,3 +33,6 @@ relative/path/to/dir/filename.extension
 
 # Ignore a file without extension
 relative/path/to/dir/anotherfile
+
+# Ignore doxygen doc
+doc/
